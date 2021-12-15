@@ -22,19 +22,20 @@ class GAT(BaseGAttN):
         attns = []
         # n_heads[0] : 8
         for _ in range(n_heads[0]):
+            # (B,N,D) -> (B,N,F)
             attns.append(layers.attn_head(inputs, bias_mat=bias_mat,
                 out_sz=hid_units[0], activation=activation,
                 in_drop=ffd_drop, coef_drop=attn_drop, residual=False))
+        # (B,N,F1*H1), F1: feature number of node, H1: head number
         h_1 = tf.concat(attns, axis=-1)
+        # len(hid_units) : number of hidden year
         for i in range(1, len(hid_units)):
             h_old = h_1
             attns = []
             for _ in range(n_heads[i]):
-                # (B,N,D) -> (B,N,F)
                 attns.append(layers.attn_head(h_1, bias_mat=bias_mat,
                     out_sz=hid_units[i], activation=activation,
                     in_drop=ffd_drop, coef_drop=attn_drop, residual=residual))
-            # (B,N,F1*H1), F1: feature number of node, H1: head number
             h_1 = tf.concat(attns, axis=-1)
         out = []
         for i in range(n_heads[-1]):
