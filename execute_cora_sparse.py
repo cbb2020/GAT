@@ -3,6 +3,7 @@ import scipy.sparse as sp
 import numpy as np
 import tensorflow as tf
 import argparse
+import sys
 
 from models import GAT
 from models import SpGAT
@@ -42,8 +43,11 @@ sparse = True
 adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = process.load_data(dataset)
 features, spars = process.preprocess_features(features)
 
+# 2708
 nb_nodes = features.shape[0]
+# 1433
 ft_size = features.shape[1]
+# 7
 nb_classes = y_train.shape[1]
 
 features = features[np.newaxis]
