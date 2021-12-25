@@ -9,7 +9,8 @@ def attn_head(seq, out_sz, bias_mat, activation, in_drop=0.0, coef_drop=0.0, res
             seq = tf.nn.dropout(seq, 1.0 - in_drop)
         # (B,N,D) -> (B,N,F)
         seq_fts = tf.layers.conv1d(seq, out_sz, 1, use_bias=False)
-
+        # print('seq.shape: ', seq.shape)
+        # print('seq_fts.shape: ', seq_fts.shape)
         # simplest self-attention possible
         # f_1 + (f_2)T : eij = a(Whi, Whj)
         # (B,N,F) -> (B,N,1)
